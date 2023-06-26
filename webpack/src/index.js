@@ -94,6 +94,4 @@ class Player {
 // can use data type to have the correct coordinates.
 // TOP says to only use methods in the objects for the game loop
 
-module.exports = {};
-
 export { Ship, Gameboard, Player };

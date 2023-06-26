@@ -1,7 +1,3 @@
-const {} = require("./functions");
+const {} = require("./index");
 
-describe("my stack", () => {
-  it("capitalise works", () => {
-    expect(capitalise("test")).toBe("Test");
-  });
-});
+describe("my stack", () => {});
