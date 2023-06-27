@@ -1,28 +1,10 @@
-import { Ship, Gameboard, Player } from "./index";
+import { player1, player2 } from "./functions";
 
-let player1Board = new Gameboard();
-let player2Board = new Gameboard();
+import { createGameboardDOM } from "./DOM";
 
-let carrier = new Ship("carrier");
-let battleship = new Ship("battleship");
-let destroyer = new Ship("destroyer");
-let submarine = new Ship("submarine");
-let patrolBoart = new Ship("patrol boat");
-
-player1Board.shipsArray.push(
-  carrier,
-  battleship,
-  destroyer,
-  submarine,
-  patrolBoart
-);
-let player1 = new Player(player1Board);
-
-player2Board.shipsArray.push(
-  carrier,
-  battleship,
-  destroyer,
-  submarine,
-  patrolBoart
-);
-let player2 = new Player(player2Board);
+function initialiseDOM() {
+  // runs the createGameboardDOM function for both players to make the DOM
+  // uses the function from DOM.js
+  createGameboardDOM(player1);
+  createGameboardDOM(player2);
+}
