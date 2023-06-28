@@ -16,7 +16,7 @@ player1Board.shipsArray.push(
   submarine,
   patrolBoart
 );
-let player1 = new Player(player1Board);
+let player1 = new Player(player1Board, "player1", true);
 player1.board.createGameboard();
 
 player2Board.shipsArray.push(
@@ -26,7 +26,7 @@ player2Board.shipsArray.push(
   submarine,
   patrolBoart
 );
-let player2 = new Player(player2Board);
+let player2 = new Player(player2Board, "player2", false);
 player2.board.createGameboard();
 
 function link() {}

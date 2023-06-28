@@ -1,0 +1,33 @@
+/* MAIN CONTAINER */
+.main-container {
+  display: flex;
+  /* align-items: center; */
+  align-items: center;
+}
+
+/* PLAYER CONTAINER */
+#player1-container,
+#player2-container {
+  display: flex;
+  justify-content: center;
+}
+
+#player1-container {
+  margin-bottom: 50px;
+}
+
+/* GAMEBOARD STYLES */
+
+/* repeat makes 10 columns/rows all 1fr width/heigght */
+#player2-gameboard,
+#player1-gameboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  height: 300px;
+  width: 300px;
+}
+
+.grid-square {
+  outline: #4caf50 solid 1px;
+}

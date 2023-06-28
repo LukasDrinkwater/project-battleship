@@ -18,6 +18,9 @@ class Ship {
   checkIfSunk() {
     if (this.shipLength === this.hitCount) {
       console.log(`${this.player} ${this.shipType} has been sunk!`);
+      return true;
+    } else {
+      return false;
     }
   }
 }
@@ -53,11 +56,14 @@ class Gameboard {
     let shipsArray = this.shipsArray;
 
     for (let ship of shipsArray) {
-      if (ship.coordinateArray.find(attackCoordinates)) {
+      console.log(ship.coordinateArray.indexOf(attackCoordinates));
+      if (ship.coordinateArray.indexOf(attackCoordinates)) {
         ship.hit();
         ship.checkIfSunk();
+        return true;
       } else {
         this.missedAttacks.push(attackCoordinates);
+        return false;
       }
     }
     // if coordinates === to coordinates in a ship ojbect
@@ -78,8 +84,10 @@ class Gameboard {
 // 1 or 2? or just have a property that says whos turn it is
 
 class Player {
-  constructor(board) {
+  constructor(board, playerName, playerTurn) {
     this.board = board;
+    this.playerName = playerName;
+    this.playerTurn = playerTurn;
   }
 }
 
