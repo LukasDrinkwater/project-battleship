@@ -1,4 +1,4 @@
-import { Ship, Gameboard, Player } from "./classes";
+import { Ship, Gameboard, Player, GameController } from "./classes";
 
 let player1Board = new Gameboard();
 let player2Board = new Gameboard();
@@ -29,6 +29,8 @@ player2Board.shipsArray.push(
 let player2 = new Player(player2Board, "player2", false);
 player2.board.createGameboard();
 
+const gameController = new GameController();
+
 function link() {}
 
-export { player1, player2, link };
+export { player1, player2, gameController };

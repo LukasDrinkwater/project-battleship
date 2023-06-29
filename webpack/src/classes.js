@@ -3,6 +3,8 @@
 // Method hit() that ++ the hit count
 // Method isSunk() that calculates it based off the length and number of hits.
 
+import { gameController } from "./functions";
+
 class Ship {
   constructor(shipType, shipLength) {
     this.shipType = shipType;
@@ -54,21 +56,59 @@ class Gameboard {
   }
   receiveAttack(attackCoordinates) {
     let shipsArray = this.shipsArray;
+    // turn the string value from the data attribute into an array
+    const targetCoordinates = this.dataCoordsToArrayCoords(attackCoordinates);
+    // const targetCoordinates = attackCoordinates
+    //   .split(",")
+    //   .map((coord) => parseInt(coord));
 
+    let foundCoordinate = undefined;
+    // loop through the ships in the players gameboard.shipsArray
     for (let ship of shipsArray) {
-      console.log(ship.coordinateArray.indexOf(attackCoordinates));
-      if (ship.coordinateArray.indexOf(attackCoordinates)) {
-        ship.hit();
-        ship.checkIfSunk();
-        return true;
-      } else {
-        this.missedAttacks.push(attackCoordinates);
-        return false;
-      }
+      // if coordinates === to coordinates in a ship ojbect
+      // ship has been hit
+
+      ship.coordinateArray.forEach((array) =>
+        array.find((coordinates) => {
+          // Check if coordinates match the targetCoordinates
+          if (
+            coordinates[0] === targetCoordinates[0] &&
+            coordinates[1] === targetCoordinates[1]
+          ) {
+            ship.hit();
+            ship.checkIfSunk();
+            foundCoordinate = coordinates;
+            return true;
+          }
+        })
+      );
+      // if the coordinates have a ship assigned to them break out for of lopp
+      if (foundCoordinate != undefined) break;
     }
-    // if coordinates === to coordinates in a ship ojbect
-    // ship has been hit
     // Else its a miss, push coordinates to missed attacks array
+    if (foundCoordinate != undefined) {
+      this.missedAttacks.push(targetCoordinates);
+    }
+  }
+  addCoordinatesToShipArray(inputShipType, inputCoordinateArray) {
+    let shipsArray = this.shipsArray;
+
+    let shipToAddTo = shipsArray.find(
+      (element) => element.shipType === inputShipType
+    );
+
+    shipToAddTo.coordinateArray.push(inputCoordinateArray);
+  }
+  dataCoordsToArrayCoords(string) {
+    return string.split(",").map((coord) => parseInt(coord));
+  }
+  createShipArray(start, end) {
+    let ship = this.shipsArray.find(
+      (element) => element === gameController.assignShip
+    );
+    const lengthOfShip = ship.length;
+    Array.from({ lengthOfShip }, (_, i) => i + 1);
+    //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   }
 }
 
@@ -102,6 +142,18 @@ function capitalise(word) {
 // can use data type to have the correct coordinates.
 // TOP says to only use methods in the objects for the game loop
 
+class GameController {
+  constructor() {
+    this.playerTurn;
+    // assignShipToPlayer gets set to the player data attribute when they click their
+    // add ship button.
+    this.assignShip;
+    this.attackOrAddShip = true;
+    this.shipStart;
+    this.shipEnd;
+  }
+}
+
 export { capitalise };
 
-export { Ship, Gameboard, Player };
+export { Ship, Gameboard, Player, GameController };
