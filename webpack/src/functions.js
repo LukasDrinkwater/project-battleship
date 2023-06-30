@@ -6,7 +6,7 @@ let player2Board = new Gameboard();
 let carrier = new Ship("carrier", 5);
 let battleship = new Ship("battleship", 4);
 let destroyer = new Ship("destroyer", 3);
-let submarine = new Ship("submarin", 3);
+let submarine = new Ship("submarine", 3);
 let patrolBoart = new Ship("patrol boat", 2);
 
 player1Board.shipsArray.push(

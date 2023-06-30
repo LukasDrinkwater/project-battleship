@@ -102,13 +102,11 @@ class Gameboard {
   dataCoordsToArrayCoords(string) {
     return string.split(",").map((coord) => parseInt(coord));
   }
-  createShipArray(start, end) {
+  createShipArray() {
     let ship = this.shipsArray.find(
       (element) => element === gameController.assignShip
     );
     const lengthOfShip = ship.length;
-    Array.from({ lengthOfShip }, (_, i) => i + 1);
-    //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   }
 }
 
@@ -149,11 +147,28 @@ class GameController {
     // add ship button.
     this.assignShip;
     this.attackOrAddShip = true;
-    this.shipStart;
-    this.shipEnd;
+    this.newShipArray = [];
   }
 }
 
 export { capitalise };
 
 export { Ship, Gameboard, Player, GameController };
+
+// could do createShipArray like this but it complicated.
+// function createArrayOfArrays(start, end) {
+//   const result = [];
+
+//   for (let i = start[0]; i <= end[0]; i++) {
+//     const subArray = [i, start[1] + (i - start[0])];
+//     result.push(subArray);
+//   }
+
+//   return result;
+// }
+
+// const start = [0, 1];
+// const end = [0, 4];
+// const arrayResult = createArrayOfArrays(start, end);
+
+// console.log(arrayResult);
