@@ -5,23 +5,24 @@ const domElements = {
   player1ContainerDOM: document.getElementById("player1-container"),
   player1MissesDOM: document.getElementById("player1-misses"),
   player1GameboardDOM: document.getElementById("player1-gameboard"),
+  player1GridSquares: document.getElementsByClassName("player1-grid-square"),
 
   player2ContainerDOM: document.getElementById("player2-container"),
   player2MissesDOM: document.getElementById("player2-misses"),
   player2GameboardDOM: document.getElementById("player2-gameboard"),
+  player2GridSquares: document.getElementsByClassName("player2-grid-square"),
 
-  startGameButtons: ,
+  startGameButton: document.getElementById("start-game-button"),
 
-  addShipButton: document.getElementsByClassName("add-ship-button"),
+  addShipButtons: document.getElementsByClassName("add-ship-button"),
 };
 
 // from the gameboard do a for loop to create the divs for each set of coordinates
 // and for each one assign the data-coordinates property of the div to the coordinates
 // that are being made.
 
-// redundant cant delete
 function createGameboardDOM(player) {
-  console.log(player1.board.boardArray);
+  // console.log(player1.board.boardArray);
 
   const playerBoard = player.board.boardArray;
 
@@ -59,17 +60,55 @@ function createGameboardDOM(player) {
   // }
 }
 
-// when ship it clicked add the eventListener to add ships and pass in the ship
-// type that was clicked
-function addNewShipButtonClick(){
-  const addShipButtons = domElements.addShipButtons;
-
-  Array.from(addShipButtons).forEach((button) => {
-    button.addEventListener("click", AddEventOnGridClickAddShip())
-  })
+// adds event listeners to the add ship buttons.
+// When an add ship button is clicked it then runs AddEventOnGridClickAddShip()
+// so you can click the grid to add a ship coords.
+function addNewShipButtonClick() {
+  let addShipButtonsNodeList = domElements.addShipButtons;
+  console.log(addShipButtonsNodeList);
+  Array.from(addShipButtonsNodeList).forEach((button) => {
+    button.addEventListener("click", AddEventOnGridClickAddShip);
+  });
 }
 
+// Runs when an add ship button is clicked from this function addNewShipButtonClick()
+function AddEventOnGridClickAddShip(button) {
+  console.log(this);
+  gameController.assignShip = this.dataset.shiptype;
+  gameController.assignToPlayer = this.dataset.playerName;
+  let newShipArray = gameController.newShipArray;
+  let gridSquares = undefined;
 
+  if (gameController.assignToPlayer === "player1") {
+    gridSquares = domElements.player1GridSquares;
+  } else {
+    gridSquares = domElements.player2GridSquares;
+  }
+
+  // Assign a variable that is gameController.assignShipToPlayer
+  // When a grid square is clicked on add that square coordinates to an array
+  Array.from(gridSquares).forEach((square) => {
+    square.addEventListener("click", OnGridClickAddShip(square, newShipArray));
+  });
+}
+
+function OnGridClickAddShip(gridSquare, newShipArray) {
+  // Get the relevant info, player name from data attribute on DIV
+  // Get grid coordinates.
+  let squareCoordinates = gridSquare.dataset.coordinates;
+  squareCoordinates = gameController.dataCoordsToArrayCoords(squareCoordinates);
+
+  // On grid square click push coordinates to gameController newShipArray
+  // When the elements in the newShipArray are the length of the ship you are adding
+  // dont let anymore coordinates be added.
+  // Also need to check if either 1st or 2nd index === 0 then it cant go -number.
+  // To get the up or down direction, check if the element is at the end grid coord is
+  // > or < than the other possible element.
+  // Check if length of the array is the correct length that the ship you are placing
+  // is
+  // Push the array to the assignShipToPlayers ship coordinatesArray.
+  // Change that ship buttons colour so so you know its been placed
+}
 
 function playerAttack(player) {
   const gridSquares = domElements.gridSquares;
@@ -116,49 +155,17 @@ function removeOnGridClickAttack() {
   });
 }
 
-// only have this active when the adding ship gameController property is true
-function AddEventOnGridClickAddShip(player) {
-  let shipToAdd = gameController.assignShip;
-  let newShipArray = gameController.newShipArray;
-
-  // Assign a variable that is gameController.assignShipToPlayer
-  // When a grid square is clicked on add that square coordinates to an array
-  Array.from(gridSquares).forEach((square) => {
-    square.addEventListener("click", OnGridClickAddShip());
-  });
-}
-
-function OnGridClickAddShip() {
-  // Get the relevant info, player name from data attribute on DIV
-  // Get grid coordinates.
-  let squareCoordinates = square.getAttribute("data-coordinates");
-  let playerNameFromSquare = square.getAttribute("data-playername");
-
-  // On grid square click push coordinates to gameController newShipArray
-  // When the elements in the newShipArray are the length of the ship you are adding
-  // dont let anymore coordinates be added.
-  // Also need to check if either 1st or 2nd index === 0 then it cant go -number.
-  // To get the up or down direction, check if the element is at the end grid coord is
-  // > or < than the other possible element.
-  // Check if length of the array is the correct length that the ship you are placing
-  // is
-  // Push the array to the assignShipToPlayers ship coordinatesArray.
-  // Change that ship buttons colour so so you know its been placed
-}
-
-export { createGameboardDOM, domElements, addEventListenersToDOM };
-
-
+export { createGameboardDOM, domElements, addNewShipButtonClick };
 
 // adding a ship but a bit trickier
- // Take start point coordinates , then next click take end point.
-  // Then fill in the coordinates of the array from the start point to end point.
-  // Check if 1st index or 2nd index is the same. That index can stay the same.
-  // loop through and make the array.
-  // Also need to check if either 1st or 2nd index === 0 then it cant go -number.
-  // To get the up or down direction, check if the element is at the end grid coord is
-  // > or < than the other possible element.
-  // Check if length of the array is the correct length that the ship you are placing
-  // is
-  // Push the array to the assignShipToPlayers ship coordinatesArray.
-  // Change that ship buttons colour so so you know its been placed
+// Take start point coordinates , then next click take end point.
+// Then fill in the coordinates of the array from the start point to end point.
+// Check if 1st index or 2nd index is the same. That index can stay the same.
+// loop through and make the array.
+// Also need to check if either 1st or 2nd index === 0 then it cant go -number.
+// To get the up or down direction, check if the element is at the end grid coord is
+// > or < than the other possible element.
+// Check if length of the array is the correct length that the ship you are placing
+// is
+// Push the array to the assignShipToPlayers ship coordinatesArray.
+// Change that ship buttons colour so so you know its been placed

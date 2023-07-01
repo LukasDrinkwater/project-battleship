@@ -99,9 +99,6 @@ class Gameboard {
 
     shipToAddTo.coordinateArray.push(inputCoordinateArray);
   }
-  dataCoordsToArrayCoords(string) {
-    return string.split(",").map((coord) => parseInt(coord));
-  }
   createShipArray() {
     let ship = this.shipsArray.find(
       (element) => element === gameController.assignShip
@@ -146,8 +143,12 @@ class GameController {
     // assignShipToPlayer gets set to the player data attribute when they click their
     // add ship button.
     this.assignShip;
+    this.assignToPlayer;
     this.attackOrAddShip = true;
     this.newShipArray = [];
+  }
+  dataCoordsToArrayCoords(string) {
+    return string.split(",").map((coord) => parseInt(coord));
   }
 }
 

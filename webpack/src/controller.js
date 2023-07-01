@@ -1,6 +1,6 @@
 import { player1, player2 } from "./functions";
 
-import { createGameboardDOM, addEventListenersToDOM } from "./DOM";
+import { createGameboardDOM, addNewShipButtonClick } from "./DOM";
 
 function initialiseDOM() {
   // runs the createGameboardDOM function for both players to make the DOM
@@ -10,7 +10,8 @@ function initialiseDOM() {
 }
 
 function initialiseEventListeners() {
-  addEventListenersToDOM();
+  // addEventListenersToDOM();
+  addNewShipButtonClick();
 }
 
 export { initialiseDOM, initialiseEventListeners };
