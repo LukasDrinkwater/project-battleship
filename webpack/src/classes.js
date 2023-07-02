@@ -7,11 +7,18 @@ import { gameController } from "./functions";
 
 class Ship {
   constructor(shipType, shipLength) {
-    this.shipType = shipType;
+    this._shipType = shipType;
     // this.player = player;
     this.coordinateArray = [];
     this.hitCount = 0;
-    this.shipLength = this.shipLength;
+    this.shipLength = shipLength;
+    this.placed = false;
+  }
+  set shipType(type) {
+    this._shipType = type;
+  }
+  get shipType() {
+    return this._shipType;
   }
   hit() {
     this.hitCount++;
@@ -90,20 +97,26 @@ class Gameboard {
       this.missedAttacks.push(targetCoordinates);
     }
   }
-  addCoordinatesToShipArray(inputShipType, inputCoordinateArray) {
+  addCoordinatesToShipArray(inputCoordinateArray) {
     let shipsArray = this.shipsArray;
 
-    let shipToAddTo = shipsArray.find(
-      (element) => element.shipType === inputShipType
+    let shipArrayToAddTo = shipsArray.find(
+      (element) => element.shipType === gameController.assignShip
     );
 
-    shipToAddTo.coordinateArray.push(inputCoordinateArray);
+    shipArrayToAddTo.coordinateArray.push(inputCoordinateArray);
   }
   createShipArray() {
     let ship = this.shipsArray.find(
       (element) => element === gameController.assignShip
     );
     const lengthOfShip = ship.length;
+  }
+  getSpecificShipLength() {
+    let ship = this.shipsArray.find(
+      (element) => element.shipType === gameController.assignShip
+    );
+    return ship.shipLength;
   }
 }
 
@@ -144,8 +157,9 @@ class GameController {
     // add ship button.
     this.assignShip;
     this.assignToPlayer;
-    this.attackOrAddShip = true;
+    // this.attackOrAddShip = true;
     this.newShipArray = [];
+    this.gameInPlay = false;
   }
   dataCoordsToArrayCoords(string) {
     return string.split(",").map((coord) => parseInt(coord));
