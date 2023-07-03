@@ -4,6 +4,8 @@ import {
   createGameboardDOM,
   addEventOnNewShipButton,
   addEventOnGridClickAddShip,
+  addEventOnGridClickAttack,
+  addEventStartGameButton,
 } from "./DOM";
 
 function initialiseDOM() {
@@ -17,6 +19,8 @@ function initialiseEventListeners() {
   // addEventListenersToDOM();
   addEventOnNewShipButton();
   addEventOnGridClickAddShip();
+  addEventOnGridClickAttack();
+  addEventStartGameButton();
 }
 
 export { initialiseDOM, initialiseEventListeners };

@@ -31,3 +31,8 @@
 .grid-square {
   outline: #4caf50 solid 1px;
 }
+
+/* adds a colour to a grid square that has a ship */
+.grid-square-ship {
+  background-color: #4caf50;
+}

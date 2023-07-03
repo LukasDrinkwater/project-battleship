@@ -62,12 +62,17 @@ class Gameboard {
     // return boardArray;
   }
   receiveAttack(attackCoordinates) {
+    if (!this.playerName === "player1" && gameController.playerTurn === false) {
+      alert("It is player 2's turn");
+    }
+    if (!this.playerName === "player2" && gameController.playerTurn === true) {
+      alert("It is player 2's turn");
+    }
+    let shipFound = undefined;
     let shipsArray = this.shipsArray;
     // turn the string value from the data attribute into an array
-    const targetCoordinates = this.dataCoordsToArrayCoords(attackCoordinates);
-    // const targetCoordinates = attackCoordinates
-    //   .split(",")
-    //   .map((coord) => parseInt(coord));
+    const targetCoordinates =
+      gameController.dataCoordsToArrayCoords(attackCoordinates);
 
     let foundCoordinate = undefined;
     // loop through the ships in the players gameboard.shipsArray
@@ -75,22 +80,30 @@ class Gameboard {
       // if coordinates === to coordinates in a ship ojbect
       // ship has been hit
 
-      ship.coordinateArray.forEach((array) =>
-        array.find((coordinates) => {
+      shipFound = ship.coordinateArray.find(
+        (coordinates) =>
           // Check if coordinates match the targetCoordinates
-          if (
-            coordinates[0] === targetCoordinates[0] &&
-            coordinates[1] === targetCoordinates[1]
-          ) {
-            ship.hit();
-            ship.checkIfSunk();
-            foundCoordinate = coordinates;
-            return true;
-          }
-        })
+          // if (
+          coordinates[0] === targetCoordinates[0] &&
+          coordinates[1] === targetCoordinates[1]
+        // coordinates === targetCoordinates;
+        // ) {
+        //   ship.hit();
+        //   ship.checkIfSunk();
+        //   foundCoordinate = coordinates;
+        //   return true;
+        // }
       );
-      // if the coordinates have a ship assigned to them break out for of lopp
-      if (foundCoordinate != undefined) break;
+
+      if (shipFound != undefined) {
+        ship.hit();
+        ship.checkIfSunk();
+        foundCoordinate = coordinates;
+        return true;
+      }
+      if (foundCoordinate != undefined)
+        // if the coordinates have a ship assigned to them break out for of lopp
+        break;
     }
     // Else its a miss, push coordinates to missed attacks array
     if (foundCoordinate != undefined) {
@@ -106,11 +119,14 @@ class Gameboard {
 
     shipArrayToAddTo.coordinateArray.push(inputCoordinateArray);
   }
-  createShipArray() {
-    let ship = this.shipsArray.find(
-      (element) => element === gameController.assignShip
+  getShipFromShipType() {
+    let shipsArray = this.shipsArray;
+
+    let ship = shipsArray.find(
+      (element) => element.shipType === gameController.assignShip
     );
-    const lengthOfShip = ship.length;
+
+    return ship;
   }
   getSpecificShipLength() {
     let ship = this.shipsArray.find(
@@ -152,10 +168,12 @@ function capitalise(word) {
 
 class GameController {
   constructor() {
-    this.playerTurn;
+    this.playerTurn = true;
     // assignShipToPlayer gets set to the player data attribute when they click their
     // add ship button.
     this.assignShip;
+    this.assignShipObject;
+    this.assignShipLength = undefined;
     this.assignToPlayer;
     // this.attackOrAddShip = true;
     this.newShipArray = [];

@@ -66,14 +66,16 @@ function addEventOnNewShipButton() {
 function assignShipToAdd(event) {
   let target = event.target;
   gameController.assignShip = target.dataset.shiptype;
-  gameController.assignToPlayer = target.dataset.playerName;
-  let newShipArray = gameController.newShipArray;
+  gameController.assignToPlayer = target.dataset.playername;
 
-  if (target.dataset.playerName === "player1") {
+  if (target.dataset.playername === "player1") {
     gameController.assignToPlayer = player1;
   } else {
     gameController.assignToPlayer = player2;
   }
+
+  gameController.assignShipObject =
+    gameController.assignToPlayer.board.getShipFromShipType();
 }
 
 // FUNCTION THAT ADDS THE EVENT LISTENER FOR ADDING SHIPS TO GRID SQUARES
@@ -87,17 +89,21 @@ function addEventOnGridClickAddShip() {
 // FUNCTION THAT IS RUN WHEN THE GRID SQUARE IS CLICKED TOO ADD SHIP
 // IF gamecontroller.gameInPlay IS FALSE
 function OnGridClickAddShip(event) {
-  if (gameController.newShipArray.length === shipToAddLength) {
+  gameController.assignShipLength =
+    gameController.assignToPlayer.board.getSpecificShipLength();
+
+  if (gameController.newShipArray.length === gameController.assignShipLength) {
     console.log("Ship has already been placed");
+    gameController.assignShipObject.placed = true;
     // Reset the gameController for the next ship.
     gameController.newShipArray = [];
-    gameController.assignShipToAdd = undefined;
-    gameController.assignToPlayer = undefined;
+    // gameController.assignShip = undefined;
+    // gameController.assignToPlayer = undefined;
     // break out of the function.
     return;
   }
   // if the gameInPlay property is false do x
-  if (!gameController.gameInPlay) {
+  if (!gameController.gameInPlay && !gameController.assignShipObject.placed) {
     let target = event.target;
     // Get the relevant info, player name from data attribute on DIV
     // Get grid coordinates.
@@ -113,6 +119,7 @@ function OnGridClickAddShip(event) {
     gameController.assignToPlayer.board.addCoordinatesToShipArray(
       squareCoordinates
     );
+    target.classList.add("grid-square-ship");
   }
 }
 
@@ -127,8 +134,28 @@ function addEventOnGridClickAttack() {
 // FUNCTION THAT IS RUN WHEN THE GRID SQUARE IS CLICKED TOO ATTACK SHIP
 // IF gamecontroller.gameInPlay IS TRUE
 function onGridClickAttack(event) {
+  let target = event.target;
+
   if (gameController.gameInPlay) {
+    let playerBoard = undefined;
+    if (target.dataset.playername === "player1") {
+      playerBoard = player1.board;
+    } else {
+      playerBoard = player2.board;
+    }
+
+    let attackCoordinates = target.dataset.coordinates;
+    playerBoard.receiveAttack(attackCoordinates);
   }
+}
+
+// ADDS EVENT LISTENER TO THE START GAME BUTTON
+// Sets the gameController.gameInPlay property to true;
+function addEventStartGameButton() {
+  domElements.startGameButton.addEventListener("click", (event) => {
+    gameController.gameInPlay = true;
+    console.log("Game has started!");
+  });
 }
 
 export {
@@ -136,4 +163,6 @@ export {
   domElements,
   addEventOnNewShipButton,
   addEventOnGridClickAddShip,
+  addEventOnGridClickAttack,
+  addEventStartGameButton,
 };
