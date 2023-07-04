@@ -92,16 +92,6 @@ function OnGridClickAddShip(event) {
   gameController.assignShipLength =
     gameController.assignToPlayer.board.getSpecificShipLength();
 
-  if (gameController.newShipArray.length === gameController.assignShipLength) {
-    console.log("Ship has already been placed");
-    gameController.assignShipObject.placed = true;
-    // Reset the gameController for the next ship.
-    gameController.newShipArray = [];
-    // gameController.assignShip = undefined;
-    // gameController.assignToPlayer = undefined;
-    // break out of the function.
-    return;
-  }
   // if the gameInPlay property is false do x
   if (!gameController.gameInPlay && !gameController.assignShipObject.placed) {
     let target = event.target;
@@ -120,6 +110,7 @@ function OnGridClickAddShip(event) {
       squareCoordinates
     );
     target.classList.add("grid-square-ship");
+    changeGridSquareDomColour(event.target);
   }
 }
 
@@ -156,6 +147,32 @@ function addEventStartGameButton() {
     gameController.gameInPlay = true;
     console.log("Game has started!");
   });
+}
+
+// SETS THE SQUARE COLOUR DEPENDING ON SHIP TYPE
+function changeGridSquareDomColour(eventTarget) {
+  let shipType = gameController.assignShip;
+  let newClass = "";
+
+  switch (shipType) {
+    case "carrier":
+      newClass = "carrier";
+      break;
+    case "battleship":
+      newClass = "battleship";
+      break;
+    case "destroyer":
+      newClass = "destroyer";
+      break;
+    case "submarine":
+      newClass = "submarine";
+      break;
+    case "patrol boat":
+      newClass = "patrol-boat";
+      break;
+  }
+
+  eventTarget.classList.add(newClass);
 }
 
 export {

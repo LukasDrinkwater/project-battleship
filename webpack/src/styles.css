@@ -33,6 +33,23 @@
 }
 
 /* adds a colour to a grid square that has a ship */
-.grid-square-ship {
-  background-color: #4caf50;
+
+.carrier {
+  background-color: red;
+}
+
+.battleship {
+  background-color: blue;
+}
+
+.destroyer {
+  background-color: green;
+}
+
+.submarine {
+  background-color: yellow;
+}
+
+.patrol-boat {
+  background-color: orange;
 }

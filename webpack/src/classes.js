@@ -13,20 +13,33 @@ class Ship {
     this.hitCount = 0;
     this.shipLength = shipLength;
     this.placed = false;
+    this._playerNameString = "";
+    this.sunkOrNot = false;
   }
   set shipType(type) {
     this._shipType = type;
   }
+  set playerNameString(playerNameString) {
+    this._playerNameString = playerNameString;
+  }
   get shipType() {
     return this._shipType;
   }
+  get playerNameString() {
+    if (gameController.playerTurn === true) {
+      return "Player 2";
+    } else {
+      return "Player 1";
+    }
+  }
   hit() {
     this.hitCount++;
-    console.log(`${this.player} ${this.shipType} has been hit.`);
+    console.log(`${this.playerNameString} ${this.shipType} has been hit.`);
   }
   checkIfSunk() {
     if (this.shipLength === this.hitCount) {
-      console.log(`${this.player} ${this.shipType} has been sunk!`);
+      console.log(`${this.playerNameString} ${this.shipType} has been sunk!`);
+      this.sunkOrNot = true;
       return true;
     } else {
       return false;
@@ -42,8 +55,8 @@ class Ship {
 // coordinates and if it hits a ship, also records the coordinates of a missed ship
 
 class Gameboard {
-  constructor() {
-    // this.player = player;
+  constructor(playerName) {
+    this.playerName = playerName;
     this.boardArray = [];
     this.missedAttacks = [];
     this.shipsArray = []; // to check if all the ships have been sunk
@@ -62,16 +75,19 @@ class Gameboard {
     // return boardArray;
   }
   receiveAttack(attackCoordinates) {
-    if (!this.playerName === "player1" && gameController.playerTurn === false) {
-      alert("It is player 2's turn");
+    console.log(gameController);
+    if (this.playerName === "player2" && gameController.playerTurn === false) {
+      alert("It is player 2's turn to attack player 1!");
+      return;
     }
-    if (!this.playerName === "player2" && gameController.playerTurn === true) {
-      alert("It is player 2's turn");
+    if (this.playerName === "player1" && gameController.playerTurn === true) {
+      alert("It is player 1's turn to attack player 2");
+      return;
     }
     let shipFound = undefined;
     let shipsArray = this.shipsArray;
     // turn the string value from the data attribute into an array
-    const targetCoordinates =
+    let targetCoordinates =
       gameController.dataCoordsToArrayCoords(attackCoordinates);
 
     let foundCoordinate = undefined;
@@ -79,36 +95,29 @@ class Gameboard {
     for (let ship of shipsArray) {
       // if coordinates === to coordinates in a ship ojbect
       // ship has been hit
-
       shipFound = ship.coordinateArray.find(
         (coordinates) =>
           // Check if coordinates match the targetCoordinates
-          // if (
           coordinates[0] === targetCoordinates[0] &&
           coordinates[1] === targetCoordinates[1]
-        // coordinates === targetCoordinates;
-        // ) {
-        //   ship.hit();
-        //   ship.checkIfSunk();
-        //   foundCoordinate = coordinates;
-        //   return true;
-        // }
       );
 
       if (shipFound != undefined) {
         ship.hit();
         ship.checkIfSunk();
-        foundCoordinate = coordinates;
-        return true;
+        foundCoordinate = targetCoordinates;
+        // return true;
       }
       if (foundCoordinate != undefined)
         // if the coordinates have a ship assigned to them break out for of lopp
         break;
     }
     // Else its a miss, push coordinates to missed attacks array
-    if (foundCoordinate != undefined) {
+    if (foundCoordinate === undefined) {
       this.missedAttacks.push(targetCoordinates);
     }
+    gameController.playerTurn = !gameController.playerTurn;
+    this.checkIfAllShipsSunk();
   }
   addCoordinatesToShipArray(inputCoordinateArray) {
     let shipsArray = this.shipsArray;
@@ -118,6 +127,22 @@ class Gameboard {
     );
 
     shipArrayToAddTo.coordinateArray.push(inputCoordinateArray);
+    // each time a ship is placed at a sqaure it checks if it is the correct length
+    // and if it is console logs a message and exits the function. To prevent the user
+    // placing too many ship squares per ship.
+    if (
+      gameController.newShipArray.length === gameController.assignShipLength
+    ) {
+      // run function that checks if the position is legal. horizontal or vertical
+      // not diagonal
+      console.log(`${gameController.assignShipObject.shipType} placed`);
+      gameController.assignShipObject.placed = true;
+      // Reset the gameController for the next ship.
+      gameController.newShipArray = [];
+
+      // break out of the function.
+      return;
+    }
   }
   getShipFromShipType() {
     let shipsArray = this.shipsArray;
@@ -133,6 +158,15 @@ class Gameboard {
       (element) => element.shipType === gameController.assignShip
     );
     return ship.shipLength;
+  }
+  checkIfAllShipsSunk() {
+    let shipsArray = this.shipsArray;
+
+    let areAllSunk = shipsArray.find((ship) => ship.sunkOrNot === false);
+
+    if (areAllSunk === undefined) {
+      console.log(`Game over. All ${this.playerName} ships have been sunk!`);
+    }
   }
 }
 
