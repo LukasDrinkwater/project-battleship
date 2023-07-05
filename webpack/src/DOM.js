@@ -104,7 +104,7 @@ function OnGridClickAddShip(event) {
       gameController.dataCoordsToArrayCoords(squareCoordinates);
 
     // Push the square coords to the newShipArray
-    gameController.newShipArray.push(squareCoordinates);
+    // gameController.newShipArray.push(squareCoordinates);
     // Push the coords to the correct player and ship array
     gameController.assignToPlayer.board.addCoordinatesToShipArray(
       squareCoordinates

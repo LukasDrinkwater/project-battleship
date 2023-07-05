@@ -121,6 +121,7 @@ class Gameboard {
   }
   addCoordinatesToShipArray(inputCoordinateArray) {
     let shipsArray = this.shipsArray;
+    gameController.newShipArray.push(inputCoordinateArray);
 
     let shipArrayToAddTo = shipsArray.find(
       (element) => element.shipType === gameController.assignShip
@@ -131,8 +132,11 @@ class Gameboard {
     // and if it is console logs a message and exits the function. To prevent the user
     // placing too many ship squares per ship.
     if (
-      gameController.newShipArray.length === gameController.assignShipLength
+      // gameController.newShipArray.length === gameController.assignShipLength
+      shipArrayToAddTo.coordinateArray.length ===
+      gameController.assignShipLength
     ) {
+      checkIfArrayLegal(shipArrayToAddTo.coordinateArray);
       // run function that checks if the position is legal. horizontal or vertical
       // not diagonal
       console.log(`${gameController.assignShipObject.shipType} placed`);
@@ -168,6 +172,10 @@ class Gameboard {
       console.log(`Game over. All ${this.playerName} ships have been sunk!`);
     }
   }
+  checkIfArrayLegal(coordinates) {
+    let sortedArray = coordinates.sort((a, b) => a[0] - b[0]);
+    // if()
+  }
 }
 
 // Might not have to use the node/square class if i do all the above methods in
@@ -189,9 +197,6 @@ class Player {
   }
 }
 
-function capitalise(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
 // computer, get it to pick a random square??????????
 
 // MAIN GAME LOOP
@@ -218,7 +223,15 @@ class GameController {
   }
 }
 
-export { capitalise };
+function capitalise(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+function checkIfArrayLegal(coordinates) {
+  let sortedArray = coordinates.sort((a, b) => a[0] - b[0]);
+  return sortedArray;
+}
+
+export { capitalise, checkIfArrayLegal };
 
 export { Ship, Gameboard, Player, GameController };
 
