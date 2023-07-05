@@ -231,9 +231,16 @@ function checkIfArrayLegal(coordinates) {
   return sortedArray;
 }
 
-export { capitalise, checkIfArrayLegal };
+// export {};
 
-export { Ship, Gameboard, Player, GameController };
+export {
+  Ship,
+  Gameboard,
+  Player,
+  GameController,
+  capitalise,
+  checkIfArrayLegal,
+};
 
 // could do createShipArray like this but it complicated.
 // function createArrayOfArrays(start, end) {

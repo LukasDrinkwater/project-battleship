@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "type": "module",
   "scripts": {
     "test": "jest",
     "watch": "webpack --watch",
@@ -14,7 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-env": "^7.22.6",
     "babel-jest": "^29.5.0",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.1",
