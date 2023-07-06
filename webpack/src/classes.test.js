@@ -10,14 +10,31 @@ describe("my stack", () => {
     expect(capitalise("test")).toBe("Test");
   });
 
-  // it("check if array legal test", () => {
-  //   expect(
-  //     checkIfArrayLegal([
-  //       [0, 2],
-  //       [0, 4],
-  //       [0, 1],
-  //       [0, 3],
-  //     ]).toBe([0, 1], [0, 2], [0, 3], [0, 4])
-  //   );
-  // });
+  it("check if array legal test", () => {
+    // const input = [
+    //   [1, 2],
+    //   [1, 1],
+    //   [1, 3],
+    // ];
+    // const expectedOutput = [
+    //   [1, 1],
+    //   [1, 2],
+    //   [1, 3],
+    // ];
+    // // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
+    // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
+    //
+    const input = [
+      [1, 2],
+      [1, 1],
+      [1, 3],
+    ];
+    const expectedOutput = [
+      [1, 1],
+      [1, 2],
+      [1, 3],
+    ];
+
+    expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
+  });
 });

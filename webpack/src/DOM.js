@@ -1,5 +1,6 @@
 import { doc } from "prettier";
-import { player1, player2, gameController } from "./functions";
+import { player1, player2 } from "./functions";
+import { gameController } from "./classes";
 
 const domElements = {
   player1ContainerDOM: document.getElementById("player1-container"),

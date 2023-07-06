@@ -3,7 +3,7 @@
 // Method hit() that ++ the hit count
 // Method isSunk() that calculates it based off the length and number of hits.
 
-import { gameController } from "./functions";
+// import { gameController } from "./functions";
 
 class Ship {
   constructor(shipType, shipLength) {
@@ -223,6 +223,8 @@ class GameController {
   }
 }
 
+const gameController = new GameController();
+
 function capitalise(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
@@ -242,6 +244,7 @@ export {
   GameController,
   capitalise,
   checkIfArrayLegal,
+  gameController,
 };
 
 export default capitalise;

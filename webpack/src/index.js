@@ -8,8 +8,17 @@ import { initialiseDOM, initialiseEventListeners } from "./controller";
 initialiseDOM();
 initialiseEventListeners();
 
-function capitalise(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
+function checkIfArrayLegal(coordinates) {
+  let sortedArray = coordinates.sort((a, b) => a[1] - b[1]);
+  return sortedArray;
+}
+let testArray = [
+  [1, 2],
+  [1, 1],
+  [1, 3],
+];
+let testFunction = checkIfArrayLegal(testArray);
 
-  export { capitalise }
+console.log(testFunction);
+
+// export { capitalise };
