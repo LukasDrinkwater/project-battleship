@@ -1,6 +1,9 @@
 // const { capitalise } = require("./index");
 // import { capitalise } from "./index";
-import { capitalise, checkIfArrayLegal } from "./classes";
+import { Gameboard, capitalise, checkIfArrayLegal } from "./classes";
+// import { capitalise } from "./index";
+
+console.log(Gameboard);
 
 describe("my stack", () => {
   it("capitalise works", () => {

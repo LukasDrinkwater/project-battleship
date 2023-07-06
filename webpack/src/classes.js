@@ -231,6 +231,8 @@ function checkIfArrayLegal(coordinates) {
   return sortedArray;
 }
 
+console.log(Gameboard);
+
 // export {};
 
 export {
@@ -242,6 +244,7 @@ export {
   checkIfArrayLegal,
 };
 
+export default capitalise;
 // could do createShipArray like this but it complicated.
 // function createArrayOfArrays(start, end) {
 //   const result = [];

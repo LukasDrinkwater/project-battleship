@@ -7,3 +7,9 @@ import { initialiseDOM, initialiseEventListeners } from "./controller";
 
 initialiseDOM();
 initialiseEventListeners();
+
+function capitalise(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  export { capitalise }
