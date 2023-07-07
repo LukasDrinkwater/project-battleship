@@ -136,16 +136,23 @@ class Gameboard {
       shipArrayToAddTo.coordinateArray.length ===
       gameController.assignShipLength
     ) {
-      checkIfArrayLegal(shipArrayToAddTo.coordinateArray);
       // run function that checks if the position is legal. horizontal or vertical
       // not diagonal
+      if (this.checkIfArrayLegal(shipArrayToAddTo.coordinateArray) === false) {
+        // reset shipArray of the ship we are adding to
+        shipArrayToAddTo.coordinateArray = [];
+        gameController.newShipArray = [];
+        console.log("break in false check");
+        return false;
+      }
+
       console.log(`${gameController.assignShipObject.shipType} placed`);
       gameController.assignShipObject.placed = true;
       // Reset the gameController for the next ship.
       gameController.newShipArray = [];
-
+      console.log("break out normally");
       // break out of the function.
-      return;
+      return true;
     }
   }
   getShipFromShipType() {
@@ -173,8 +180,35 @@ class Gameboard {
     }
   }
   checkIfArrayLegal(coordinates) {
-    let sortedArray = coordinates.sort((a, b) => a[0] - b[0]);
-    // if()
+    // if the first condition = 0 it does the other condition on the array.
+
+    let sortedArray = coordinates
+      .slice()
+      .sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+
+    let horizontalCheck;
+    let verticalCheck;
+
+    if (sortedArray[0][0] === sortedArray[sortedArray.length - 1][0]) {
+      horizontalCheck = true;
+    } else {
+      horizontalCheck = false;
+    }
+
+    if (sortedArray[0][1] === sortedArray[sortedArray.length - 1][1]) {
+      verticalCheck = true;
+    } else {
+      verticalCheck = false;
+    }
+
+    if (horizontalCheck === true || verticalCheck === true) {
+      return true;
+    } else {
+      alert(
+        "Shit placement is invalid. The ship must be horizonal or vertial and have no gaps."
+      );
+      return false;
+    }
   }
 }
 
@@ -228,40 +262,7 @@ const gameController = new GameController();
 function capitalise(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
-function checkIfArrayLegal(coordinates) {
-  let sortedArray = coordinates.sort((a, b) => a[0] - b[0]);
-  return sortedArray;
-}
 
-console.log(Gameboard);
-
-// export {};
-
-export {
-  Ship,
-  Gameboard,
-  Player,
-  GameController,
-  capitalise,
-  checkIfArrayLegal,
-  gameController,
-};
+export { Ship, Gameboard, Player, GameController, capitalise, gameController };
 
 export default capitalise;
-// could do createShipArray like this but it complicated.
-// function createArrayOfArrays(start, end) {
-//   const result = [];
-
-//   for (let i = start[0]; i <= end[0]; i++) {
-//     const subArray = [i, start[1] + (i - start[0])];
-//     result.push(subArray);
-//   }
-
-//   return result;
-// }
-
-// const start = [0, 1];
-// const end = [0, 4];
-// const arrayResult = createArrayOfArrays(start, end);
-
-// console.log(arrayResult);

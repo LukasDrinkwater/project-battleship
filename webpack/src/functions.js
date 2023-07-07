@@ -1,7 +1,5 @@
 import { Ship, Gameboard, Player, GameController } from "./classes";
 
-console.log(Gameboard);
-
 let player1Board = new Gameboard("player1");
 let player2Board = new Gameboard("player2");
 

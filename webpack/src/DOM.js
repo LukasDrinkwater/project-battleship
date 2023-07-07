@@ -107,9 +107,14 @@ function OnGridClickAddShip(event) {
     // Push the square coords to the newShipArray
     // gameController.newShipArray.push(squareCoordinates);
     // Push the coords to the correct player and ship array
-    gameController.assignToPlayer.board.addCoordinatesToShipArray(
-      squareCoordinates
-    );
+    if (
+      gameController.assignToPlayer.board.addCoordinatesToShipArray(
+        squareCoordinates
+      ) === false
+    ) {
+      removeGridSquareDomColour();
+      return;
+    }
     target.classList.add("grid-square-ship");
     changeGridSquareDomColour(event.target);
   }
@@ -174,6 +179,40 @@ function changeGridSquareDomColour(eventTarget) {
   }
 
   eventTarget.classList.add(newClass);
+}
+
+// REMOVED THE SQUARE COLOUR IF THE SHIP PLACEMENT IS FALSE
+function removeGridSquareDomColour() {
+  let shipType = gameController.assignShip;
+  let className = "";
+
+  switch (shipType) {
+    case "carrier":
+      className = "carrier";
+      break;
+    case "battleship":
+      className = "battleship";
+      break;
+    case "destroyer":
+      newClass = "destroyer";
+      break;
+    case "submarine":
+      className = "submarine";
+      break;
+    case "patrol boat":
+      className = "patrol-boat";
+      break;
+  }
+
+  let shipDOMElements = document.getElementsByClassName(className);
+
+  Array.from(shipDOMElements).forEach((element) =>
+    element.classList.remove(className)
+  );
+
+  // for (let el of shipDOMElements) {
+
+  // }
 }
 
 export {

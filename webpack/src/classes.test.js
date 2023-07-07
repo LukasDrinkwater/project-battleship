@@ -11,19 +11,6 @@ describe("my stack", () => {
   });
 
   it("check if array legal test", () => {
-    // const input = [
-    //   [1, 2],
-    //   [1, 1],
-    //   [1, 3],
-    // ];
-    // const expectedOutput = [
-    //   [1, 1],
-    //   [1, 2],
-    //   [1, 3],
-    // ];
-    // // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
-    // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
-    //
     const input = [
       [1, 2],
       [1, 1],
@@ -34,6 +21,19 @@ describe("my stack", () => {
       [1, 2],
       [1, 3],
     ];
+    // // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
+    // expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
+    //
+    // const input = [
+    //   [1, 2],
+    //   [1, 1],
+    //   [1, 3],
+    // ];
+    // const expectedOutput = [
+    //   [1, 1],
+    //   [1, 2],
+    //   [1, 3],
+    // ];
 
     expect(checkIfArrayLegal(input)).toEqual(expectedOutput);
   });
