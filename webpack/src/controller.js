@@ -6,6 +6,7 @@ import {
   addEventOnGridClickAddShip,
   addEventOnGridClickAttack,
   addEventStartGameButton,
+  addEventComputerButton,
 } from "./DOM";
 
 function initialiseDOM() {
@@ -21,6 +22,7 @@ function initialiseEventListeners() {
   addEventOnGridClickAddShip();
   addEventOnGridClickAttack();
   addEventStartGameButton();
+  addEventComputerButton();
 }
 
 export { initialiseDOM, initialiseEventListeners };

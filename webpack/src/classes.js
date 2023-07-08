@@ -75,7 +75,6 @@ class Gameboard {
     // return boardArray;
   }
   receiveAttack(attackCoordinates) {
-    console.log(gameController);
     if (this.playerName === "player2" && gameController.playerTurn === false) {
       alert("It is player 2's turn to attack player 1!");
       return;
@@ -106,7 +105,9 @@ class Gameboard {
         ship.hit();
         ship.checkIfSunk();
         foundCoordinate = targetCoordinates;
-        // return true;
+        gameController.playerTurn = !gameController.playerTurn;
+        this.checkIfAllShipsSunk();
+        return true;
       }
       if (foundCoordinate != undefined)
         // if the coordinates have a ship assigned to them break out for of lopp
@@ -115,9 +116,11 @@ class Gameboard {
     // Else its a miss, push coordinates to missed attacks array
     if (foundCoordinate === undefined) {
       this.missedAttacks.push(targetCoordinates);
+      gameController.playerTurn = !gameController.playerTurn;
+      return false;
     }
-    gameController.playerTurn = !gameController.playerTurn;
-    this.checkIfAllShipsSunk();
+    // gameController.playerTurn = !gameController.playerTurn;
+    // this.checkIfAllShipsSunk();
   }
   addCoordinatesToShipArray(inputCoordinateArray) {
     let shipsArray = this.shipsArray;
@@ -177,6 +180,7 @@ class Gameboard {
 
     if (areAllSunk === undefined) {
       console.log(`Game over. All ${this.playerName} ships have been sunk!`);
+      alert(`Game over. All ${this.playerName} ships have been sunk!`);
     }
   }
   checkIfArrayLegal(coordinates) {
@@ -188,20 +192,44 @@ class Gameboard {
 
     let horizontalCheck;
     let verticalCheck;
-
+    let horizontalIncrementCheck;
+    let verticalIncrementCheck;
+    // check to see if the ship is horizontal
     if (sortedArray[0][0] === sortedArray[sortedArray.length - 1][0]) {
       horizontalCheck = true;
     } else {
       horizontalCheck = false;
     }
-
+    // check to see it the ship is vertical
     if (sortedArray[0][1] === sortedArray[sortedArray.length - 1][1]) {
       verticalCheck = true;
     } else {
       verticalCheck = false;
     }
 
-    if (horizontalCheck === true || verticalCheck === true) {
+    // check to see if the ship has any spaces.
+    for (let i = 1; i < sortedArray.length; i++) {
+      const prevCoords = sortedArray[i - 1];
+      const currCoords = sortedArray[i];
+
+      // Check x-coordinate
+      if (currCoords[0] !== prevCoords[0] + 1) {
+        horizontalIncrementCheck = false;
+        break;
+      }
+
+      // Check y-coordinate
+      if (currCoords[1] !== prevCoords[1] + 1) {
+        verticalIncrementCheck = false;
+        break;
+      }
+    }
+
+    if (
+      (verticalIncrementCheck !== false ||
+        horizontalIncrementCheck !== false) &&
+      (horizontalCheck === true || verticalCheck === true)
+    ) {
       return true;
     } else {
       alert(
@@ -251,6 +279,7 @@ class GameController {
     // this.attackOrAddShip = true;
     this.newShipArray = [];
     this.gameInPlay = false;
+    this.computer = false;
   }
   dataCoordsToArrayCoords(string) {
     return string.split(",").map((coord) => parseInt(coord));

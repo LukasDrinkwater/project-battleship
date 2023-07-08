@@ -18,6 +18,8 @@ const domElements = {
   addShipButtons: document.getElementsByClassName("add-ship-button"),
 
   allGridSquares: document.getElementsByClassName("grid-square"),
+
+  computerButton: document.getElementById("computer-button"),
 };
 
 // CREATES THE GAMEBOARD DIVS
@@ -142,7 +144,12 @@ function onGridClickAttack(event) {
     }
 
     let attackCoordinates = target.dataset.coordinates;
-    playerBoard.receiveAttack(attackCoordinates);
+    let attack = playerBoard.receiveAttack(attackCoordinates);
+    if (attack) {
+      target.classList.add("hit");
+    } else if (attack === false) {
+      target.classList.add("miss");
+    }
   }
 }
 
@@ -153,6 +160,23 @@ function addEventStartGameButton() {
     gameController.gameInPlay = true;
     console.log("Game has started!");
   });
+}
+
+// ADDS EVENT LISTENER TO THE SWITCH PVP OR PVCOMPUTER BUTTON
+// Sets the computer property on the gameController to false or true
+function addEventComputerButton() {
+  domElements.computerButton.addEventListener("click", (event) => {
+    gameController.computer = !gameController.computer;
+    alert(`Computer opponent ${gameController.computer}`);
+  });
+}
+
+function toggleCoverComputerGameboard() {
+  if (gameController.computer === true) {
+    // cover up all grid squares
+  } else if (gameController.computer === false) {
+    // uncover all the grid squares.
+  }
 }
 
 // SETS THE SQUARE COLOUR DEPENDING ON SHIP TYPE
@@ -209,10 +233,6 @@ function removeGridSquareDomColour() {
   Array.from(shipDOMElements).forEach((element) =>
     element.classList.remove(className)
   );
-
-  // for (let el of shipDOMElements) {
-
-  // }
 }
 
 export {
@@ -222,4 +242,5 @@ export {
   addEventOnGridClickAddShip,
   addEventOnGridClickAttack,
   addEventStartGameButton,
+  addEventComputerButton,
 };

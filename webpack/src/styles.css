@@ -29,17 +29,18 @@
 }
 
 .grid-square {
-  outline: #4caf50 solid 1px;
+  outline: #000000 solid 1px;
+  background-color: #31f3f3;
 }
 
 /* adds a colour to a grid square that has a ship */
 
 .carrier {
-  background-color: red;
+  background-color: #da0dcf;
 }
 
 .battleship {
-  background-color: blue;
+  background-color: #66ff00;
 }
 
 .destroyer {
@@ -52,4 +53,13 @@
 
 .patrol-boat {
   background-color: orange;
+}
+
+.hit {
+  background-color: red;
+  /* U+274C */
+}
+
+.miss {
+  background-color: white;
 }
