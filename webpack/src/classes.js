@@ -105,7 +105,9 @@ class Gameboard {
         ship.hit();
         ship.checkIfSunk();
         foundCoordinate = targetCoordinates;
-        gameController.playerTurn = !gameController.playerTurn;
+        if (!gameController.computer) {
+          gameController.playerTurn = !gameController.playerTurn;
+        }
         this.checkIfAllShipsSunk();
         return true;
       }
@@ -116,7 +118,9 @@ class Gameboard {
     // Else its a miss, push coordinates to missed attacks array
     if (foundCoordinate === undefined) {
       this.missedAttacks.push(targetCoordinates);
-      gameController.playerTurn = !gameController.playerTurn;
+      if (!gameController.computer) {
+        gameController.playerTurn = !gameController.playerTurn;
+      }
       return false;
     }
     // gameController.playerTurn = !gameController.playerTurn;
@@ -237,6 +241,22 @@ class Gameboard {
       );
       return false;
     }
+  }
+  checkIfShipsArrayCollide(newCoordinate) {
+    let shipsArray = this.shipsArray;
+
+    shipsArray.forEach((ship) => {
+      ship.coordinateArray.find((coordinate) => {
+        if (
+          coordinate[0] === newCoordinate[0] &&
+          coordinate[1] === newCoordinate[1]
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    });
   }
 }
 
