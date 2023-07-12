@@ -245,23 +245,36 @@ class Gameboard {
   checkIfShipsArrayCollide(newShip) {
     let shipsArray = this.shipsArray;
     let newShipArray = newShip.coordinateArray;
+    let allCoordsArray = [];
 
-    shipsArray.forEach((ship) => {
-      if (ship.shipType !== newShip.shipType) {
-        for (let array of newShipArray) {
-          ship.coordinateArray.find((array) => {
-            if (
-              coordinate[0] === newCoordinate[0] &&
-              coordinate[1] === newCoordinate[1]
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          });
+    // forEach loop through all the computers ship Objects.
+
+    //
+    //
+
+    for (const ship of shipsArray) {
+      if (
+        ship.shipType !== newShip.shipType &&
+        ship.coordinateArray.length !== 0
+      ) {
+        for (let coord of ship.coordinateArray) {
+          allCoordsArray.push(coord);
         }
       }
-    });
+
+      for (const array of newShipArray) {
+        const collision = allCoordsArray.find((coord) => {
+          // if it finds a match it returns it to collision
+          return array[0] === coord[0] && array[1] === coord[1];
+        });
+
+        if (collision) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
 

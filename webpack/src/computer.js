@@ -23,9 +23,10 @@ function addComputerShips() {
     // check to see if any of the computer ship coordinates exist already
     // If it returns true remake newCompShipArray
     if (player2.board.checkIfShipsArrayCollide(ship)) {
+      console.log(ship);
       generateComputerShipCoords(
         generateRandomStartCoord(),
-        ship.length,
+        ship.shipLength,
         ship.coordinateArray
       );
     }
@@ -61,15 +62,20 @@ function generateComputerShipCoords(
 ) {
   // returns true or false to decide if its horizontal or vertical
   let horiOrVert = Math.random() >= 0.5;
-  // let coordinateArray = [];
+  if (shipCoordinateArray.length !== 0) shipCoordinateArray = [];
 
   let x = startCoord[0];
   let y = startCoord[1];
 
   if (horiOrVert) {
     // pre check they are legal
-    if (y + length > 9) {
-      return generateComputerShipCoords(generateRandomStartCoord(), shipLength);
+    if (y + shipLength > 9) {
+      shipCoordinateArray = [];
+      return generateComputerShipCoords(
+        generateRandomStartCoord(),
+        shipLength,
+        shipCoordinateArray
+      );
     }
     for (let i = 0; i < shipLength; i++) {
       shipCoordinateArray.push([x, y + i]);
@@ -77,7 +83,12 @@ function generateComputerShipCoords(
   } else {
     // pre check they are legal
     if (x + shipLength > 9) {
-      return generateComputerShipCoords(generateRandomStartCoord(), shipLength);
+      shipCoordinateArray = [];
+      return generateComputerShipCoords(
+        generateRandomStartCoord(),
+        shipLength,
+        shipCoordinateArray
+      );
     }
     for (let i = 0; i < shipLength; i++) {
       shipCoordinateArray.push([x + i, y]);
@@ -101,8 +112,11 @@ function getDomGridSquareFromCoords(coords) {
     domGridSquareCoords =
       gameController.dataCoordsToArrayCoords(domGridSquareCoords);
 
-    if (domGridSquareCoords === coords) {
-      return square;
+    if (
+      domGridSquareCoords[0] === coords[0] &&
+      domGridSquareCoords[1] === coords[1]
+    ) {
+      return true;
     }
   });
 
