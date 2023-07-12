@@ -242,20 +242,25 @@ class Gameboard {
       return false;
     }
   }
-  checkIfShipsArrayCollide(newCoordinate) {
+  checkIfShipsArrayCollide(newShip) {
     let shipsArray = this.shipsArray;
+    let newShipArray = newShip.coordinateArray;
 
     shipsArray.forEach((ship) => {
-      ship.coordinateArray.find((coordinate) => {
-        if (
-          coordinate[0] === newCoordinate[0] &&
-          coordinate[1] === newCoordinate[1]
-        ) {
-          return true;
-        } else {
-          return false;
+      if (ship.shipType !== newShip.shipType) {
+        for (let array of newShipArray) {
+          ship.coordinateArray.find((array) => {
+            if (
+              coordinate[0] === newCoordinate[0] &&
+              coordinate[1] === newCoordinate[1]
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          });
         }
-      });
+      }
     });
   }
 }

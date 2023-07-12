@@ -1,6 +1,7 @@
 import { doc } from "prettier";
 import { player1, player2 } from "./functions";
 import { gameController } from "./classes";
+import { addComputerShips } from "./computer";
 
 const domElements = {
   player1ContainerDOM: document.getElementById("player1-container"),
@@ -168,6 +169,10 @@ function addEventComputerButton() {
   domElements.computerButton.addEventListener("click", (event) => {
     gameController.computer = !gameController.computer;
     alert(`Computer opponent ${gameController.computer}`);
+
+    if (gameController.computer) {
+      addComputerShips();
+    }
   });
 }
 
@@ -180,8 +185,11 @@ function toggleCoverComputerGameboard() {
 }
 
 // SETS THE SQUARE COLOUR DEPENDING ON SHIP TYPE
-function changeGridSquareDomColour(eventTarget) {
-  let shipType = gameController.assignShip;
+function changeGridSquareDomColour(
+  shipType = gameController.assignShip,
+  eventTarget
+) {
+  // let shipType = gameController.assignShip;
   let newClass = "";
 
   switch (shipType) {
@@ -206,8 +214,8 @@ function changeGridSquareDomColour(eventTarget) {
 }
 
 // REMOVED THE SQUARE COLOUR IF THE SHIP PLACEMENT IS FALSE
-function removeGridSquareDomColour() {
-  let shipType = gameController.assignShip;
+function removeGridSquareDomColour(shipType = gameController.assignShip) {
+  // let shipType = gameController.assignShip;
   let className = "";
 
   switch (shipType) {
@@ -243,4 +251,5 @@ export {
   addEventOnGridClickAttack,
   addEventStartGameButton,
   addEventComputerButton,
+  changeGridSquareDomColour,
 };
