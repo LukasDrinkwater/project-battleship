@@ -1,7 +1,7 @@
 import { doc } from "prettier";
 import { player1, player2 } from "./functions";
 import { gameController } from "./classes";
-import { addComputerShips } from "./computer";
+import { addComputerShips, computerAttack } from "./computer";
 
 const domElements = {
   player1ContainerDOM: document.getElementById("player1-container"),
@@ -38,11 +38,7 @@ function createGameboardDOM(player) {
       let coordinatesValue = playerBoard[i][j];
       const gridSquare = document.createElement("div");
       gridSquare.classList.add("grid-square");
-      gridSquare.setAttribute(
-        "data-coordinates",
-        coordinatesValue
-        // `${coordinatesValue[0]},${coordinatesValue[1]}`
-      );
+      gridSquare.setAttribute("data-coordinates", coordinatesValue);
 
       if (player.playerName === "player1") {
         gridSquare.classList.add(`${player.playerName}-grid-square`);
@@ -93,11 +89,13 @@ function addEventOnGridClickAddShip() {
 // FUNCTION THAT IS RUN WHEN THE GRID SQUARE IS CLICKED TOO ADD SHIP
 // IF gamecontroller.gameInPlay IS FALSE
 function OnGridClickAddShip(event) {
-  gameController.assignShipLength =
-    gameController.assignToPlayer.board.getSpecificShipLength();
+  // gameController.assignShipLength =
+  //   gameController.assignToPlayer.board.getSpecificShipLength();
 
   // if the gameInPlay property is false do x
   if (!gameController.gameInPlay && !gameController.assignShipObject.placed) {
+    gameController.assignShipLength =
+      gameController.assignToPlayer.board.getSpecificShipLength();
     let target = event.target;
     // Get the relevant info, player name from data attribute on DIV
     // Get grid coordinates.
@@ -135,9 +133,9 @@ function addEventOnGridClickAttack() {
 // IF gamecontroller.gameInPlay IS TRUE
 function onGridClickAttack(event) {
   let target = event.target;
+  let playerBoard = undefined;
 
   if (gameController.gameInPlay) {
-    let playerBoard = undefined;
     if (target.dataset.playername === "player1") {
       playerBoard = player1.board;
     } else {
@@ -151,6 +149,10 @@ function onGridClickAttack(event) {
     } else if (attack === false) {
       target.classList.add("miss");
     }
+  }
+  // function that runs when computer is enabled
+  if (gameController.computer && gameController.playerTurn === false) {
+    computerAttack();
   }
 }
 
@@ -186,8 +188,8 @@ function toggleCoverComputerGameboard() {
 
 // SETS THE SQUARE COLOUR DEPENDING ON SHIP TYPE
 function changeGridSquareDomColour(
-  shipType = gameController.assignShip,
-  eventTarget
+  eventTarget,
+  shipType = gameController.assignShip
 ) {
   // let shipType = gameController.assignShip;
   let newClass = "";

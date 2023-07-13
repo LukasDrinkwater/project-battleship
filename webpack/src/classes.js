@@ -74,20 +74,26 @@ class Gameboard {
     }
     // return boardArray;
   }
-  receiveAttack(attackCoordinates) {
+  receiveAttack(targetCoordinates) {
     if (this.playerName === "player2" && gameController.playerTurn === false) {
       alert("It is player 2's turn to attack player 1!");
       return;
-    }
-    if (this.playerName === "player1" && gameController.playerTurn === true) {
+    } else if (
+      this.playerName === "player1" &&
+      gameController.playerTurn === true
+    ) {
       alert("It is player 1's turn to attack player 2");
       return;
     }
     let shipFound = undefined;
     let shipsArray = this.shipsArray;
     // turn the string value from the data attribute into an array
-    let targetCoordinates =
-      gameController.dataCoordsToArrayCoords(attackCoordinates);
+    if (typeof targetCoordinates === "string") {
+      targetCoordinates =
+        gameController.dataCoordsToArrayCoords(targetCoordinates);
+    }
+    // let targetCoordinates =
+    // gameController.dataCoordsToArrayCoords(attackCoordinates);
 
     let foundCoordinate = undefined;
     // loop through the ships in the players gameboard.shipsArray
@@ -105,15 +111,17 @@ class Gameboard {
         ship.hit();
         ship.checkIfSunk();
         foundCoordinate = targetCoordinates;
-        if (!gameController.computer) {
-          gameController.playerTurn = !gameController.playerTurn;
-        }
+        // if PvComputer is false it changes to the other players turn.
+        // if (!gameController.computer) {
+        gameController.playerTurn = !gameController.playerTurn;
+        console.log(gameController.playerTurn);
+        // }
         this.checkIfAllShipsSunk();
         return true;
       }
-      if (foundCoordinate != undefined)
-        // if the coordinates have a ship assigned to them break out for of lopp
-        break;
+      // if (foundCoordinate != undefined)
+      //   // if the coordinates have a ship assigned to them break out for of lopp
+      //   break;
     }
     // Else its a miss, push coordinates to missed attacks array
     if (foundCoordinate === undefined) {
@@ -157,7 +165,6 @@ class Gameboard {
       gameController.assignShipObject.placed = true;
       // Reset the gameController for the next ship.
       gameController.newShipArray = [];
-      console.log("break out normally");
       // break out of the function.
       return true;
     }
