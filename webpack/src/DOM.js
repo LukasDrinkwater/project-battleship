@@ -29,8 +29,6 @@ const domElements = {
 // that are being made.
 
 function createGameboardDOM(player) {
-  // console.log(player1.board.boardArray);
-
   const playerBoard = player.board.boardArray;
 
   for (let i = 0; i < 10; i++) {
@@ -146,8 +144,10 @@ function onGridClickAttack(event) {
     let attack = playerBoard.receiveAttack(attackCoordinates);
     if (attack) {
       target.classList.add("hit");
+      target.classList.remove("hide-square");
     } else if (attack === false) {
       target.classList.add("miss");
+      target.classList.remove("hide-square");
     }
   }
   // function that runs when computer is enabled
@@ -175,14 +175,22 @@ function addEventComputerButton() {
     if (gameController.computer) {
       addComputerShips();
     }
+    toggleCoverComputerGameboard();
   });
 }
 
 function toggleCoverComputerGameboard() {
   if (gameController.computer === true) {
     // cover up all grid squares
+    let gridSquares = domElements.player2GridSquares;
+    Array.from(gridSquares).forEach((square) =>
+      square.classList.add("hide-square")
+    );
   } else if (gameController.computer === false) {
     // uncover all the grid squares.
+    Array.from(gridSquares).forEach((square) =>
+      square.classList.remove("hide-square")
+    );
   }
 }
 

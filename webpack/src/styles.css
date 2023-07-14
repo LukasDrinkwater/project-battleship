@@ -63,3 +63,7 @@
 .miss {
   background-color: white;
 }
+
+.hide-square {
+  background-color: black;
+}

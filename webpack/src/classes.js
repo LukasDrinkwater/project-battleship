@@ -59,6 +59,7 @@ class Gameboard {
     this.playerName = playerName;
     this.boardArray = [];
     this.missedAttacks = [];
+    this.alreadyAttacked = [];
     this.shipsArray = []; // to check if all the ships have been sunk
     // Might not need it though
   }
@@ -92,8 +93,6 @@ class Gameboard {
       targetCoordinates =
         gameController.dataCoordsToArrayCoords(targetCoordinates);
     }
-    // let targetCoordinates =
-    // gameController.dataCoordsToArrayCoords(attackCoordinates);
 
     let foundCoordinate = undefined;
     // loop through the ships in the players gameboard.shipsArray
@@ -111,24 +110,21 @@ class Gameboard {
         ship.hit();
         ship.checkIfSunk();
         foundCoordinate = targetCoordinates;
+        this.alreadyAttacked.push(targetCoordinates);
         // if PvComputer is false it changes to the other players turn.
         // if (!gameController.computer) {
         gameController.playerTurn = !gameController.playerTurn;
-        console.log(gameController.playerTurn);
         // }
         this.checkIfAllShipsSunk();
         return true;
       }
-      // if (foundCoordinate != undefined)
-      //   // if the coordinates have a ship assigned to them break out for of lopp
-      //   break;
     }
     // Else its a miss, push coordinates to missed attacks array
     if (foundCoordinate === undefined) {
       this.missedAttacks.push(targetCoordinates);
-      if (!gameController.computer) {
-        gameController.playerTurn = !gameController.playerTurn;
-      }
+      // if (!gameController.computer) {
+      gameController.playerTurn = !gameController.playerTurn;
+      // }
       return false;
     }
     // gameController.playerTurn = !gameController.playerTurn;
@@ -157,7 +153,6 @@ class Gameboard {
         // reset shipArray of the ship we are adding to
         shipArrayToAddTo.coordinateArray = [];
         gameController.newShipArray = [];
-        console.log("break in false check");
         return false;
       }
 

@@ -13,20 +13,7 @@ function addComputerShips() {
     // Fill the array with the correct coords for the ship.
     // Check if any of the coords are out the grid or another ship already contains
     // them.
-    // let startCoord = generateRandomStartCoord();
     generateComputerShipCoords(generateRandomStartCoord(), ship);
-
-    // check to see if any of the computer ship coordinates exist already
-    // If it returns true remake newCompShipArray
-    // if (player2.board.checkIfShipsArrayCollide(ship)) {
-    //   console.log("redmaking ship", ship);
-    //   ship.coordinateArray = [];
-    //   generateComputerShipCoords(
-    //     generateRandomStartCoord(),
-    //     ship.shipLength,
-    //     ship.coordinateArray
-    //   );
-    // }
 
     ship.coordinateArray.forEach((array) => {
       // find the dom grid square for each coords array
@@ -91,13 +78,19 @@ function generateComputerShipCoords(startCoord, ship) {
 
 // function to make the computer attack the player
 function computerAttack() {
+  console.log(gameController.playerTurn);
   if (gameController.computer && gameController.playerTurn === false) {
     let playerBoard = player1.board;
     let computerAttackCoords = generateRandomStartCoord();
-    // send the computer attack coords to player1 board object.
-    let attack = playerBoard.receiveAttack(computerAttackCoords);
+
+    while (computerCheckIfGridAttacked(computerAttackCoords)) {
+      computerAttackCoords = generateRandomStartCoord();
+    }
 
     let target = getDomGridSquareFromCoords(computerAttackCoords);
+
+    // send the computer attack coords to player1 board object.
+    let attack = playerBoard.receiveAttack(computerAttackCoords);
 
     if (attack) {
       target.classList.add("hit");
@@ -105,10 +98,26 @@ function computerAttack() {
       target.classList.add("miss");
     }
   }
-  gameController.playerTurn = !gameController.playerTurn;
+  console.log("comp attack", gameController.playerTurn);
+  // gameController.playerTurn = !gameController.playerTurn;
+  console.log("end comp attack", gameController.playerTurn);
+}
+
+function computerCheckIfGridAttacked(computerAttackCoords) {
+  let missedCoords = player2.board.missedAttacks;
+  let alreadyAttacked = player2.board.alreadyAttacked;
+
+  let combinedAlreadyTargeted = missedCoords.concat(alreadyAttacked);
+
+  let hasCoordBeenAttacked =
+    combinedAlreadyTargeted.includes(computerAttackCoords);
+
+  return hasCoordBeenAttacked;
 }
 
 function getDomGridSquareFromCoords(coords) {
+  console.log(gameController.playerTurn);
+
   let gridSquares = domElements.player2GridSquares;
   // assign grid square node array to variable
   if (gameController.playerTurn === false) {
@@ -129,15 +138,6 @@ function getDomGridSquareFromCoords(coords) {
   });
 
   return gridSquare;
-
-  // Array.from(gridSquares).forEach((square) => {
-  //   let domGridSquareCoords = square.dataset.coordinates;
-  //   domGridSquareCoords =
-  //     gameController.dataCoordsToArrayCoords(domGridSquareCoords);
-
-  //   if (domGridSquareCoords === coords) {
-  //   }
-  // });
 }
 
 export { addComputerShips, computerAttack };
