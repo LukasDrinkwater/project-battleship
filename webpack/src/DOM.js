@@ -14,12 +14,12 @@ const domElements = {
   player2GameboardDOM: document.getElementById("player2-gameboard"),
   player2GridSquares: document.getElementsByClassName("player2-grid-square"),
 
+  statusBox: document.getElementById("status"),
+  notificationBox: document.getElementById("notification"),
+
   startGameButton: document.getElementById("start-game-button"),
-
   addShipButtons: document.getElementsByClassName("add-ship-button"),
-
   allGridSquares: document.getElementsByClassName("grid-square"),
-
   computerButton: document.getElementById("computer-button"),
 };
 
@@ -152,7 +152,9 @@ function onGridClickAttack(event) {
   }
   // function that runs when computer is enabled
   if (gameController.computer && gameController.playerTurn === false) {
-    computerAttack();
+    setTimeout(() => {
+      computerAttack();
+    }, 750);
   }
 }
 
@@ -170,11 +172,17 @@ function addEventStartGameButton() {
 function addEventComputerButton() {
   domElements.computerButton.addEventListener("click", (event) => {
     gameController.computer = !gameController.computer;
-    alert(`Computer opponent ${gameController.computer}`);
+    // alert(`Computer opponent ${gameController.computer}`);
+
+    let playerOrComputerDiv = document.getElementById("player-or-computer");
 
     if (gameController.computer) {
       addComputerShips();
+      playerOrComputerDiv.innerHTML = "Computer";
+    } else {
+      playerOrComputerDiv.innerHTML = "Player 2";
     }
+
     toggleCoverComputerGameboard();
   });
 }

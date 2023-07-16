@@ -1,8 +1,18 @@
+body {
+  background-color: #f3f3f3;
+}
+
+* {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+}
+
 /* MAIN CONTAINER */
 .main-container {
   display: flex;
   /* align-items: center; */
   align-items: center;
+  margin: 0;
 }
 
 /* PLAYER CONTAINER */
@@ -14,6 +24,77 @@
 
 #player1-container {
   margin-bottom: 50px;
+}
+
+/* ADD SHIP BUTTONS */
+
+.ship-button-list button {
+  width: 100%;
+}
+
+#player1-ship-button-container,
+#player2-ship-button-container {
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#player1-ship-button-container ul,
+#player2-ship-button-container ul {
+  margin-right: 10px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  text-align: center;
+  list-style-type: none;
+}
+
+#player1-ship-button-container li,
+#player2-ship-button-container li {
+  margin-bottom: 10px;
+  /* margin-right: 10px; */
+  display: inline-block;
+}
+
+#player1-ship-button-container button,
+#player2-ship-button-container button {
+  padding: 0.5em 1em;
+  border-radius: 0.2em;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.add-ship-button:not(.add-ship-button--selected):hover {
+  background: #cccccc;
+}
+
+/* .add-ship-button--selected {
+  background-color: #cccccc;
+} */
+
+.carrier-button {
+  background-color: #da0dd0d8;
+}
+
+.battleship-button {
+  background-color: #66ff00;
+}
+
+.destroyer-button {
+  background-color: green;
+}
+
+.submarine-button {
+  background-color: rgba(255, 255, 0, 0.925);
+}
+
+.patrol-boat-button {
+  background-color: orange;
 }
 
 /* GAMEBOARD STYLES */
@@ -31,6 +112,19 @@
 .grid-square {
   outline: #000000 solid 1px;
   background-color: #31f3f3;
+}
+.status-container {
+  display: flex;
+  height: 40px;
+  flex-direction: column;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  margin-bottom: 10px;
 }
 
 /* adds a colour to a grid square that has a ship */
@@ -54,15 +148,122 @@
 .patrol-boat {
   background-color: orange;
 }
-
+/* 
+.miss,
 .hit {
-  background-color: red;
-  /* U+274C */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.miss {
+.hit::after,
+.miss::after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+.hit::after {
+  background-color: red;
+}
+
+.miss::after {
   background-color: white;
 }
+
+.miss::before,
+.hit::before {
+  content: "";
+  position: absolute;
+  animation: strike 0.2s ease-out forwards;
+  border-width: 0.1vmin;
+  border-style: solid;
+  border: 0.1vmin solid white;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+.hit::before {
+  border-color: red;
+}
+
+.miss:before {
+  border-color: white;
+}
+
+@keyframes strike {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(4);
+  }
+} */
+
+.miss,
+.hit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hit::after,
+.miss::after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+.miss::after {
+  background-color: white;
+}
+
+.hit::after {
+  background-color: red;
+}
+
+.miss::before {
+  content: "";
+  position: absolute;
+  animation: hit 0.2s ease-out forwards;
+  border: 1vmin solid white;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+.hit {
+  animation: boom 0.2s ease-out forwards;
+}
+
+@keyframes hit {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+/* @keyframes boom {
+  0% {
+    background-color: red;
+  }
+
+  100% {
+    background-color: hsl(0, 0%, 80%);
+  }
+} */
 
 .hide-square {
   background-color: black;

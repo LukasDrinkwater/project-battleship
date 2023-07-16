@@ -11,10 +11,11 @@
       <div id="player1-container">
         <div class="player-misses" id="player1-misses"></div>
         <div id="player1-ship-button-container">
-          <ul id="ship-button-list">
+          <div class="current-player">Player</div>
+          <ul id="ship-button-list" class="ship-button-list">
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button carrier-button"
                 data-shipType="carrier"
                 data-playername="player1"
               >
@@ -23,7 +24,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button battleship-button"
                 data-shipType="battleship"
                 data-playername="player1"
               >
@@ -32,7 +33,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button destroyer-button"
                 data-shipType="destroyer"
                 data-playername="player1"
               >
@@ -41,7 +42,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button submarine-button"
                 data-shipType="submarine"
                 data-playername="player1"
               >
@@ -50,7 +51,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button patrol-boat-button"
                 data-shipType="patrol boat"
                 data-playername="player1"
               >
@@ -61,13 +62,18 @@
         </div>
         <div id="player1-gameboard"></div>
       </div>
+      <div class="status-container">
+        <div class="status" id="status"></div>
+        <div class="notification" id="notification"></div>
+      </div>
       <div id="player2-container">
         <div class="player-misses" id="player2-misses"></div>
         <div id="player2-ship-button-container">
-          <ul id="player2-ship-button-list">
+          <div class="current-player" id="player-or-computer">Player 2</div>
+          <ul id="player2-ship-button-list" class="ship-button-list">
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button carrier-button"
                 data-shipType="carrier"
                 data-playername="player2"
               >
@@ -76,7 +82,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button battleship-button"
                 data-shipType="battleship"
                 data-playername="player2"
               >
@@ -85,7 +91,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button destroyer-button"
                 data-shipType="destroyer"
                 data-playername="player2"
               >
@@ -94,7 +100,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button submarine-button"
                 data-shipType="submarine"
                 data-playername="player2"
               >
@@ -103,7 +109,7 @@
             </li>
             <li>
               <button
-                class="add-ship-button"
+                class="add-ship-button patrol-boat-button"
                 data-shipType="patrol boat"
                 data-playername="player2"
               >
@@ -118,7 +124,7 @@
         <button id="start-game-button">Start Game</button>
       </div>
       <div id="coputer-button-container">
-        <button id="computer-button">Switch PvP or PvComputer</button>
+        <button id="computer-button">Enable Computer</button>
       </div>
     </div>
   </body>

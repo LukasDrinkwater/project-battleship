@@ -35,6 +35,24 @@ function generateRandomStartCoord() {
     let num = Math.floor(Math.random() * 9);
     coordArray.push(num);
   }
+
+  if (gameController.gameInPlay && gameController.computer) {
+    let missedCoords = player1.board.missedAttacks;
+    let alreadyAttacked = player1.board.alreadyAttacked;
+    let combinedAlreadyTargeted = missedCoords.concat(alreadyAttacked);
+
+    const hasBeenTargeted = combinedAlreadyTargeted.find(
+      (coord) => coord[0] === coordArray[0] && coord[1] === coordArray[1]
+    );
+
+    if (hasBeenTargeted) {
+      return generateRandomStartCoord();
+    }
+    console.log(coordArray);
+
+    return coordArray;
+  }
+  console.log(coordArray);
   return coordArray;
 }
 
@@ -83,9 +101,9 @@ function computerAttack() {
     let playerBoard = player1.board;
     let computerAttackCoords = generateRandomStartCoord();
 
-    while (computerCheckIfGridAttacked(computerAttackCoords)) {
-      computerAttackCoords = generateRandomStartCoord();
-    }
+    // while (computerCheckIfGridAttacked(computerAttackCoords)) {
+    //   computerAttackCoords = generateRandomStartCoord();
+    // }
 
     let target = getDomGridSquareFromCoords(computerAttackCoords);
 
@@ -101,18 +119,6 @@ function computerAttack() {
   console.log("comp attack", gameController.playerTurn);
   // gameController.playerTurn = !gameController.playerTurn;
   console.log("end comp attack", gameController.playerTurn);
-}
-
-function computerCheckIfGridAttacked(computerAttackCoords) {
-  let missedCoords = player2.board.missedAttacks;
-  let alreadyAttacked = player2.board.alreadyAttacked;
-
-  let combinedAlreadyTargeted = missedCoords.concat(alreadyAttacked);
-
-  let hasCoordBeenAttacked =
-    combinedAlreadyTargeted.includes(computerAttackCoords);
-
-  return hasCoordBeenAttacked;
 }
 
 function getDomGridSquareFromCoords(coords) {

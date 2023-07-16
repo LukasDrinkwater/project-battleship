@@ -4,6 +4,7 @@
 // Method isSunk() that calculates it based off the length and number of hits.
 
 // import { gameController } from "./functions";
+import { domElements } from "./DOM";
 
 class Ship {
   constructor(shipType, shipLength) {
@@ -28,6 +29,8 @@ class Ship {
   get playerNameString() {
     if (gameController.playerTurn === true) {
       return "Player 2";
+    } else if (gameController.playerTurn === true && gameController.computer) {
+      return "Computer";
     } else {
       return "Player 1";
     }
@@ -35,12 +38,13 @@ class Ship {
   hit() {
     this.hitCount++;
     console.log(`${this.playerNameString} ${this.shipType} has been hit.`);
+    return `${this.playerNameString} ${this.shipType} has been hit.`;
   }
   checkIfSunk() {
     if (this.shipLength === this.hitCount) {
       console.log(`${this.playerNameString} ${this.shipType} has been sunk!`);
       this.sunkOrNot = true;
-      return true;
+      return `${this.playerNameString} ${this.shipType} has been sunk!`;
     } else {
       return false;
     }
@@ -107,8 +111,9 @@ class Gameboard {
       );
 
       if (shipFound != undefined) {
-        ship.hit();
-        ship.checkIfSunk();
+        this.updateNotificationBox(ship.hit());
+        this.updateNotificationBox(ship.checkIfSunk());
+
         foundCoordinate = targetCoordinates;
         this.alreadyAttacked.push(targetCoordinates);
         // if PvComputer is false it changes to the other players turn.
@@ -117,6 +122,13 @@ class Gameboard {
         // }
         this.checkIfAllShipsSunk();
         return true;
+      }
+      if (gameController) {
+        this.updateStatusBox("Player 1");
+      } else if (!gameController.playerTurn && gameController.computer) {
+        this.updateStatusBox("Computer");
+      } else {
+        this.updateStatusBox();
       }
     }
     // Else its a miss, push coordinates to missed attacks array
@@ -277,6 +289,22 @@ class Gameboard {
     }
 
     return false;
+  }
+  updateStatusBox(message) {
+    let statusBox = domElements.statusBox;
+
+    if (gameController.playerTurn) {
+      statusBox.innerHTML = "Computers turn";
+    } else if (!gameController.playerTurn && gameController.computer) {
+      statusBox.innerHTML = "Player 1 turn";
+    } else {
+      statusBox.innerHTML = "Player 2 turn";
+    }
+  }
+  updateNotificationBox(message) {
+    if (!message) return;
+    let notificationBox = domElements.notificationBox;
+    notificationBox.innerHTML = message;
   }
 }
 
