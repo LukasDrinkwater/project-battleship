@@ -7,7 +7,13 @@
     <title>Project Battleship</title>
   </head>
   <body>
+    <div id="overlay" class=""></div>
     <div class="main-contatiner">
+      <div class="reset-game" id="reset-container">
+        <button data-reset-button class="reset-button" id="reset-button">
+          Start new game.
+        </button>
+      </div>
       <div id="player1-container">
         <div class="player-misses" id="player1-misses"></div>
         <div id="player1-ship-button-container">
@@ -120,11 +126,13 @@
         </div>
         <div id="player2-gameboard"></div>
       </div>
-      <div id="start-button-container">
-        <button id="start-game-button">Start Game</button>
-      </div>
-      <div id="coputer-button-container">
-        <button id="computer-button">Enable Computer</button>
+      <div class="start-container">
+        <div id="start-button-container">
+          <button id="start-game-button">Start Game</button>
+        </div>
+        <div id="coputer-button-container">
+          <button id="computer-button">Enable Computer</button>
+        </div>
       </div>
     </div>
   </body>

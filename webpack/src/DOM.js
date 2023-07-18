@@ -87,9 +87,6 @@ function addEventOnGridClickAddShip() {
 // FUNCTION THAT IS RUN WHEN THE GRID SQUARE IS CLICKED TOO ADD SHIP
 // IF gamecontroller.gameInPlay IS FALSE
 function OnGridClickAddShip(event) {
-  // gameController.assignShipLength =
-  //   gameController.assignToPlayer.board.getSpecificShipLength();
-
   // if the gameInPlay property is false do x
   if (!gameController.gameInPlay && !gameController.assignShipObject.placed) {
     gameController.assignShipLength =

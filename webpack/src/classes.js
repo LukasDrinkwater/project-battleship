@@ -4,7 +4,13 @@
 // Method isSunk() that calculates it based off the length and number of hits.
 
 // import { gameController } from "./functions";
-import { domElements } from "./DOM";
+import { domElements, createGameboardDOM } from "./DOM";
+import { player1, player2 } from "./functions";
+import {
+  player1BoardState,
+  player2BoardState,
+  initialiseEventListeners,
+} from "./controller";
 
 class Ship {
   constructor(shipType, shipLength) {
@@ -123,12 +129,12 @@ class Gameboard {
         this.checkIfAllShipsSunk();
         return true;
       }
-      if (gameController) {
+      if (gameController.playerTurn) {
         this.updateStatusBox("Player 1");
       } else if (!gameController.playerTurn && gameController.computer) {
         this.updateStatusBox("Computer");
       } else {
-        this.updateStatusBox();
+        this.updateStatusBox("Player 2");
       }
     }
     // Else its a miss, push coordinates to missed attacks array
@@ -194,11 +200,21 @@ class Gameboard {
   checkIfAllShipsSunk() {
     let shipsArray = this.shipsArray;
 
-    let areAllSunk = shipsArray.find((ship) => ship.sunkOrNot === false);
+    let areAllSunk = shipsArray.find(
+      (ship) => ship.sunkOrNot === false && ship.placed === true
+    );
 
     if (areAllSunk === undefined) {
+      if (gameController.playerTurn) {
+        this.updateNotificationBox("Player 2 has won");
+      } else if (!gameController.playerTurn && gameController.computer) {
+        this.updateNotificationBox("Computer has won");
+      } else {
+        this.updateNotificationBox("Player 1 has won");
+      }
+
       console.log(`Game over. All ${this.playerName} ships have been sunk!`);
-      alert(`Game over. All ${this.playerName} ships have been sunk!`);
+      gameController.gameOver();
     }
   }
   checkIfArrayLegal(coordinates) {
@@ -340,10 +356,10 @@ class GameController {
     this.playerTurn = true;
     // assignShipToPlayer gets set to the player data attribute when they click their
     // add ship button.
-    this.assignShip;
-    this.assignShipObject;
+    this.assignShip = undefined;
+    this.assignShipObject = undefined;
     this.assignShipLength = undefined;
-    this.assignToPlayer;
+    this.assignToPlayer = undefined;
     // this.attackOrAddShip = true;
     this.newShipArray = [];
     this.gameInPlay = false;
@@ -351,6 +367,52 @@ class GameController {
   }
   dataCoordsToArrayCoords(string) {
     return string.split(",").map((coord) => parseInt(coord));
+  }
+  gameOver() {
+    const button = document.getElementById("reset-button");
+    const resetContainer = document.getElementById("reset-container");
+    resetContainer.classList.add("active");
+    const overlay = document.getElementById("overlay");
+    overlay.classList.add("active");
+
+    button.addEventListener("click", () => gameController.resetGame());
+  }
+  resetGame() {
+    const resetContainer = document.getElementById("reset-container");
+    resetContainer.classList.remove("active");
+    const overlay = document.getElementById("overlay");
+    overlay.classList.remove("active");
+
+    console.log("working");
+    gameController.playerTurn = true;
+    gameController.assignShip = undefined;
+    gameController.assignShipLength = undefined;
+    gameController.assignToPlayer = undefined;
+    gameController.newShipArray = [];
+    gameController.gameInPlay = false;
+    gameController.computer = false;
+
+    domElements.player1GameboardDOM.innerHTML = player1BoardState;
+    // createGameboardDOM(player1);
+
+    player1.board.shipsArray.forEach((ship) => {
+      ship.coordinateArray = [];
+      ship.hitCount = 0;
+      ship.placed = false;
+      ship.sunkOrNot = false;
+    });
+
+    domElements.player2GameboardDOM.innerHTML = player2BoardState;
+    // createGameboardDOM(player2);
+
+    player2.board.shipsArray.forEach((ship) => {
+      ship.coordinateArray = [];
+      ship.hitCount = 0;
+      ship.placed = false;
+      ship.sunkOrNot = false;
+    });
+
+    initialiseEventListeners();
   }
 }
 
